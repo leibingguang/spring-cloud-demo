@@ -1,0 +1,27 @@
+server:
+  port: 7001
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: eureka-server
+  freemarker: ## 如果在项目中引入了Thymeleaf, 那么需要下面的配置
+    template-loader-path: classpath:/templates/
+    prefer-file-system-access: false
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${spring.application.instance_id:${server.port}}
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 60000
+    remote-region-registry-fetch-interval: 5
+
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+    registry-fetch-interval-seconds: 5
+    healthcheck:
+      enabled: true
